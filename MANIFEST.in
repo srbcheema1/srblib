@@ -1,0 +1,4 @@
+include dfr/lib
+include dfr/dependencies
+include requirements.txt
+include README.md
