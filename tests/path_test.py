@@ -32,7 +32,7 @@ def test_abs_path_windows():
         res = path_tests[path]
         assert(_abs_path_windows(path,debug=True)==res)
 
-def test_abs_path_windows():
+def test_abs_path_unix():
     from srblib.path import _abs_path_unix
     home_path = os.getenv("HOME")#always return without / at end, ex: C:\User\srb
 
@@ -46,3 +46,27 @@ def test_abs_path_windows():
     for path in path_tests.keys():
         res = path_tests[path]
         assert(_abs_path_unix(path)==res)
+
+def test_is_child_of():
+    from srblib import is_child_of
+    home_path = os.getenv("HOME")#always return without / at end, ex: C:\User\srb
+
+    path_tests_true = {
+        "User/srb/hello/":pwd+"/User/srb/hello/world/cpp",
+        "../User/srb/hello/":parent_dir+"/User/srb/hello/world",
+        "~/srb/hello/":home_path+"/srb/hello/world",
+        "hell/../good":pwd+"/good",
+    }
+
+    path_tests_false = {
+        "User/srb/hello/":pwd+"/User/srbcheema",
+        "../User/srb/hello/":parent_dir+"/User/srb",
+    }
+
+    for path in path_tests_true.keys():
+        res = path_tests_true[path]
+        assert(is_child_of(path,res))
+
+    for path in path_tests_false.keys():
+        res = path_tests_false[path]
+        assert(not is_child_of(path,res))

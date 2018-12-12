@@ -106,6 +106,14 @@ def abs_path(path,slash='/'):
     else:
         return _abs_path_unix(path)
 
+def is_child_of(parent,child):
+    '''
+    detects if child path is child of parent path
+    '''
+    parent = abs_path(parent)
+    child = abs_path(child)
+    if(parent in child): return True
+    return False
 
 if __name__ == "__main__":
     '''

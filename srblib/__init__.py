@@ -2,6 +2,7 @@ __version__ = '0.0.1'
 __mod_name__ = 'srblib'
 
 from .path import abs_path
+from .path import is_child_of
 
 from .colour import Colour
 
