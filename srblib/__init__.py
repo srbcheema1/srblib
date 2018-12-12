@@ -6,6 +6,10 @@ from .path import is_child_of
 
 from .colour import Colour
 
+from .dependency import install_arg_complete
+from .dependency import install_dependencies
+from .dependency import is_installed
+
 from .files import verify_file
 from .files import verify_folder
 from .files import remove

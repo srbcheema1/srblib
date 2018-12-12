@@ -1,8 +1,12 @@
 import os
 import subprocess
 
-from .util import line_adder
-from .colour import Colour
+class C: # for colours
+    R = '\033[91m'
+    G = '\033[92m'
+    Y = '\033[93m'
+    E = '\033[0m'
+
 
 def _get_supported_distros(dependency_map):
     supported_distros = set()
@@ -10,6 +14,16 @@ def _get_supported_distros(dependency_map):
         for key in rules.keys():
             supported_distros.add(key)
     return supported_distros
+
+
+def line_adder(filename, line):
+    with open(filename, 'r+') as f:
+        content = f.read()
+        f.seek(0, 0)
+        lines = [x.strip() for x in f.readlines()]
+        if(not line in lines):
+            f.seek(0, 0)
+            f.write(content + '\n' + line + '\n')
 
 
 def _recognise_distro(distros=['ubuntu']):
@@ -50,9 +64,9 @@ def install_dependencies(dependency_map, verbose = False):
     distro = _recognise_distro(supported_distros)
     if(verbose):
         if(not distro):
-            Colour.print('unrecognised distro, please contact srbcheema2@gmail.com for support', Colour.RED)
+            print(C.R+'unrecognised distro, please contact srbcheema2@gmail.com for full support for your distro'+C.E)
         else:
-            Colour.print('Distro detected to be '+distro+' based',Colour.GREEN)
+            print(C.G+'Distro detected to be '+distro+' based'+C.E)
 
     all_installed = True
 
@@ -61,14 +75,14 @@ def install_dependencies(dependency_map, verbose = False):
             continue
         rules = dependency_map[d]
         if distro and distro in rules.keys():
-            Colour.print('installing '+d+' dependency',Colour.GREEN)
+            print(C.G+'installing '+d+' dependency'+C.E)
             os.system(rules[distro])
             if not is_installed(d):
-                Colour.print('please install ' +d+ ' dependency manually',Colour.YELLOW)
-                Colour.print('try command : '+rules[distro],Colour.YELLOW)
+                print(C.Y+'please install ' +d+ ' dependency manually'+C.E)
+                print(C.Y+'try command : '+rules[distro]+C.E)
                 all_installed = False
         else:
-            Colour.print('Please install ' +d+' dependency manually',Colour.YELLOW)
+            print(C.Y+'Please install ' +d+' dependency manually'+C.E)
             all_installed = False
 
     return all_installed
