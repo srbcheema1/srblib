@@ -36,27 +36,30 @@ def _reactified(path):
 def _abs_path_unix(path):
     pwd = str(os.getcwd())#always return without / at end;
     home_path = os.getenv("HOME")#always return without / at end
+    if(not home_path): raise Exception('home path variable not set')
 
     if(len(path)>1 and path[-1]=='/'):#remove last backslash
         path=path[:-1]
     if(path[0]=='/'):
-        return reactified(path)
+        return _reactified(path)
     if(path[0]=='~'):
-        return reactified(home_path + path[1:])
+        return _reactified(home_path + path[1:])
     if(path[0]!='.'):
-        return reactified(pwd + '/' + path)
+        return _reactified(pwd + '/' + path)
 
-    return reactified(pwd +'/'+ path)
+    return _reactified(pwd +'/'+ path)
 
 
 
-def _abs_path_windows(path):
+def _abs_path_windows(path,debug=False):
     '''
     takes path in any slash but return only in forward slash
     '''
     pwd = str(os.getcwd())#always return without / at end except drives ex C:\
     home_path = os.getenv("userprofile")#always return without / at end, ex: C:\User\srb
-    if(home_path==''):home_path = 'C:\\User\\testing'
+    if(not home_path):
+        if(debug): home_path = 'C:\\User\\testing'
+        else: raise Exception('home path variable not set')
 
     # make paths better looking
     pwd = _change_slash(pwd)
@@ -77,7 +80,7 @@ def _abs_path_windows(path):
 
     return ans
 
-def _change_slash(path,shash='/'):
+def _change_slash(path,slash='/'):
     ans = ""
     for a in path:
         if a in ['/','\\']:

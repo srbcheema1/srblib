@@ -1,8 +1,8 @@
 import os
 import shutil
 
-from .abs_path import abs_path
-from .Colour import Colour
+from .path import abs_path
+from .colour import Colour
 
 def verify_folder(folder,debug=False):
     '''

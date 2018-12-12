@@ -1,6 +1,6 @@
 import sys
 
-from .Colour import Colour
+from .colour import Colour
 
 
 _dependency_err_1 = """
