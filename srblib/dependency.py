@@ -73,8 +73,45 @@ def install_dependencies(dependency_map, verbose = False):
 
     return all_installed
 
+def remove_dependencies(dependency_map, verbose = False):
+    supported_distros = _get_supported_distros(dependency_map)
+    distro = _recognise_distro(supported_distros)
+    if(verbose):
+        if(not distro):
+            Colour.print('unrecognised distro, please contact srbcheema2@gmail.com for support', Colour.RED)
+        else:
+            Colour.print('Distro detected to be '+distro+' based',Colour.GREEN)
+
+    all_removed = True
+
+    for d in dependency_map.keys():
+        if not is_installed(d):
+            continue
+        rules = dependency_map[d]
+        if distro and distro in rules.keys():
+            Colour.print('removing '+d+' dependency',Colour.GREEN)
+            os.system(rules[distro])
+            if is_installed(d):
+                Colour.print('please remove ' +d+ ' dependency manually',Colour.YELLOW)
+                Colour.print('try command : '+rules[distro],Colour.YELLOW)
+                all_removed = False
+        else:
+            Colour.print('Please remove ' +d+' dependency manually',Colour.YELLOW)
+            all_removed = False
+
+    return all_removed
+
 
 if __name__ == '__main__':
+    dependency_map = {
+        'register-python-argcomplete':{
+            'ubuntu':'sudo apt remove python-argcomplete',
+        },
+        'figlet':{
+            'ubuntu':'sudo apt remove figlet',
+        },
+    }
+    remove_dependencies(dependency_map,verbose=True)
     dependency_map = {
         'register-python-argcomplete':{
             'ubuntu':'sudo apt install python-argcomplete',
