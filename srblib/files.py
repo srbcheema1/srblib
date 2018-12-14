@@ -43,3 +43,17 @@ def remove(path,debug=False):
         shutil.rmtree(path)
     else:
         Colour.print('unknown path : '+path,Colour.RED)
+
+
+
+def file_name(file_path):
+    file_path = abs_path(file_path)
+    items = file_path.split('/')[-1]
+    return items
+
+def file_extension(file_path):
+    file_name_ = file_name(file_path)
+    if('.' in file_name):
+        return file_name.split('.')[-1]
+    else:
+        return ''

@@ -115,6 +115,23 @@ def is_child_of(parent,child):
     if(parent in child): return True
     return False
 
+
+def parent_dir(file_path,level=1):
+    here = str(abs_path(file_path))
+    while(level>0):
+        here = abs_path(os.path.join(here, os.pardir))
+        level -= 1
+        if(here==''):
+            return '/'
+
+    return abs_path(here)
+
+def relative_path(file_path):
+    file_path = abs_path(file_path)
+    pwd = str(os.getcwd())
+    file_path = file_path[len(pwd):len(file_path)]
+    return '.'+file_path
+
 if __name__ == "__main__":
     '''
     point to be noted:
