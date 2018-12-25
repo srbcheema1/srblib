@@ -17,4 +17,6 @@ script:
   - python3 setup.py install
   #- srblib --help
   #- srblib --version
+  - sudo add-apt-repository universe
+  - sudo apt update
   - pytest

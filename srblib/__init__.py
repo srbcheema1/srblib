@@ -4,10 +4,15 @@ __mod_name__ = 'srblib'
 
 from .colour import Colour
 
+from .debugger import on_srbpc
+from .debugger import on_travis
+
 from .dependency import install_arg_complete
 from .dependency import install_dependencies
+from .dependency import install_dependencies_pkg
 from .dependency import is_installed
 from .dependency import remove_dependencies
+from .dependency import remove_dependencies_pkg
 
 from .files import file_extension
 from .files import file_name
@@ -33,3 +38,4 @@ from .system import get_os_name
 
 from .util import line_adder
 from .util import show_dependency_error_and_exit
+

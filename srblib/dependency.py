@@ -23,6 +23,13 @@ def _recognise_distro(distros=['ubuntu']):
     except:
         return None
 
+def _get_installed_package_mangers(available_package_managers):
+    installed_package_managers = set()
+    for apm in available_package_managers:
+        if is_installed(apm):
+            installed_package_managers.add(apm)
+    return installed_package_managers
+
 
 def is_installed(soft):
     dump_out = ' > /dev/null 2>&1'
@@ -68,7 +75,7 @@ def install_dependencies(dependency_map, verbose = False):
                 Colour.print('try command : '+rules[distro],Colour.YELLOW)
                 all_installed = False
         else:
-            Colour.print('Please install ' +d+' dependency manually',Colour.YELLOW)
+            Colour.print('Please install ' +d+ ' dependency manually',Colour.YELLOW)
             all_installed = False
 
     return all_installed
@@ -100,6 +107,61 @@ def remove_dependencies(dependency_map, verbose = False):
             all_removed = False
 
     return all_removed
+
+def install_dependencies_pkg(dependency_map, verbose=False):
+    all_installed = True
+    for dependency in dependency_map.keys():
+        if is_installed(dependency):
+            if verbose: Colour.print('.:Dependency '+dependency+' already installed...',Colour.GREEN)
+            continue
+
+        rules = dependency_map[dependency]
+        installed_package_managers = _get_installed_package_mangers(rules.keys())
+
+        if len(installed_package_managers) == 0:
+            Colour.print('No supported package manager available for ' +Colour.END+ dependency +Colour.RED
+                    + ' please contact srbcheema2@gmail.com for support', Colour.RED)
+            continue
+
+        Colour.print('.:Installing '+dependency+' dependency',Colour.GREEN)
+        for ipm in installed_package_managers :
+            os.system(rules[ipm])
+            if is_installed(dependency) :# else try other package managers
+                break
+        if not is_installed(dependency):
+            Colour.print('please install ' +Colour.END+ dependency +Colour.YELLOW+ ' manually',Colour.YELLOW)
+            for ipm in installed_package_managers :
+                Colour.print('try command : '+Colour.END+ rules[ipm],Colour.YELLOW)
+            all_installed = False
+    return all_installed
+
+def remove_dependencies_pkg(dependency_map, verbose=False):
+    all_removed = True
+    for dependency in dependency_map.keys():
+        if not is_installed(dependency):
+            if verbose: Colour.print('.:Dependency '+dependency+' already not installed...',Colour.GREEN)
+            continue
+
+        rules = dependency_map[dependency]
+        installed_package_managers = _get_installed_package_mangers(rules.keys())
+
+        if len(installed_package_managers) == 0:
+            Colour.print('No supported package manager rule available for ' +Colour.END+ dependency + Colour.RED
+                    + ' please contact srbcheema2@gmail.com for support', Colour.RED)
+            continue
+
+        Colour.print('.:Uninstalling '+dependency+' dependency',Colour.GREEN)
+        for ipm in installed_package_managers :
+            os.system(rules[ipm])
+            if is_installed(dependency) :# else try other package managers
+                break
+        if not is_installed(dependency):
+            Colour.print('please uninstall ' +Colour.END+ dependency +Colour.YELLOW+ ' manually',Colour.YELLOW)
+            for ipm in installed_package_managers :
+                Colour.print('try command : '+Colour.END+ rules[ipm],Colour.YELLOW)
+            all_removed = False
+    return all_removed
+
 
 
 if __name__ == '__main__':

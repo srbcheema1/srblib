@@ -1,12 +1,12 @@
 import os
 
-srbpc = False
+on_srbpc = False
 if(os.environ['USER'] == 'srb'):
-    srbpc = True
+    on_srbpc = True
 
-travis = False
+on_travis = False
 if(os.environ['USER'] == 'travis'):
-    travis = True
+    on_travis = True
 
 debug = False
 
