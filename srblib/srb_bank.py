@@ -4,15 +4,26 @@ import os
 import pickle
 
 from .path import abs_path
-from .files import verify_file
+from .files import verify_file, file_name, file_extension
 
 class srbbank:
-    def __init__(self,file_name="temp",password=None):
+    '''
+    args:
+        filename:- filename to be used to store data, it will be a file locally without .bank extension
+        password:- password if needed. to open a passwrd protected file you need to send password
+    '''
+    def __init__(self,filename="temp",password=None):
         self._password = password
         self._loggedin = False
         self._data = dict()
 
-        self._file_name = abs_path('.'+file_name+'.bank')
+        filename = abs_path('.'+filename)
+        file_ext = file_extension(filename)
+        if file_ext == '':
+            filename += '.bank'
+        else:
+            raise Exception('file_name should not have extension')
+        self._file_name = filename
         if not os.path.exists(self._file_name):
             self._loggedin = True
             self._save() # needs loggedin
@@ -22,14 +33,18 @@ class srbbank:
 
 
     def _login(self,password):
+        '''
+        logins into a bank account
+        once logged in we can perform read write operations
+        '''
         data = pickle.load(open(self._file_name,'rb'))
         _password = data.get('password')
-        if(not _password):
+        if(not _password): # not password protected
             self._password = None
             self._loggedin = True
             return
 
-        if(not password): raise Exception('password protected')
+        if(not password): raise Exception('password protected, please provide password')
 
         if(srbbank._md5(password) == _password): self._loggedin = True
         else: raise Exception('wrong password')
@@ -48,10 +63,14 @@ class srbbank:
         if(password):
             self._password = srbbank._md5(password)
         else:
-            password = getpass.getpass('Enter your password:')
-            _pasword = getpass.getpass('Enter your password:')
-            if(password == _pasword):
-                self._password = srbbank._md5(password)
+            while True:
+                password = getpass.getpass('Enter your password:')
+                _pasword = getpass.getpass('ReEnter your password:')
+                if(password == _pasword):
+                    self._password = srbbank._md5(password)
+                    break
+                else:
+                    print('passwords do not match')
         self._save()
 
     @_authenticator
