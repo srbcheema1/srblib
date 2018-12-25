@@ -53,7 +53,8 @@ def file_name(file_path):
 
 def file_extension(file_path):
     file_name_ = file_name(file_path)
-    if('.' in file_name):
-        return file_name.split('.')[-1]
+    if(file_name_[0] == '.'): file_name_ = file_name_[1:]
+    if('.' in file_name_):
+        return file_name_.split('.')[-1]
     else:
         return ''
