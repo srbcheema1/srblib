@@ -3,7 +3,7 @@ import json
 from .path import abs_path
 from .files import verify_file
 
-class srbjson:
+class SrbJson:
     '''
     A json class with common functionality.
     parameters:
@@ -12,11 +12,13 @@ class srbjson:
                     can be of two forms:
                         1. {}   # default
                         2. { 'app_name':{} } # default embeded in something, helps to check if file is good/bad
+        strict - strict json follows template strictly and user can only modify values not keys
     '''
-    def __init__(self,file_path,template={}):
+    def __init__(self,file_path,template={},strict=False):
+        self.strict = strict
         self.file_path = abs_path(file_path)
         self.template = template
-        self.masterkey = srbjson._get_master_key(template) # generlly 'app_name'
+        self.masterkey = SrbJson._get_master_key(template) # generlly 'app_name'
         self.fetch_data()
 
     srblib_template = {
@@ -27,33 +29,57 @@ class srbjson:
     }
 
     def fetch_data(self):
-        self.data = srbjson.extract_data(self.file_path,self.template) # also creates empty if not there
+        self.data = SrbJson.extract_data(self.file_path,self.template) # also creates empty if not there
+        if self.strict:
+            template = self.template
+            if(self.masterkey): template = template[self.masterkey]
+            for key in template.keys():
+                if not key in self.data:
+                    raise Exception('key' +key+ ' missing, json should be similar to template in strict mode')
+            for key in self.data:
+                if not key in template:
+                    raise Exception('Extra key present ' +key+ ', json should be similar to template in strict mode')
+
         return self.data
 
     def keys(self):
         return self.data.keys()
 
     def __getitem__(self,index):
-        if(index in self.data):
-            return self.data[index]
-        else:
-            return None
+        self.fetch_data()
+        return self.data[index]
 
     def __setitem__(self,index,value):
-        if(index in self.data):
+        if self.strict:
+            if index in self.data:
+                self.data[index]=value
+            else:
+                raise Exception('cannot add new key ' +index+ ' in strict mode')
+        else:
             self.data[index]=value
-            srbjson.dump_data(self.data,self.file_path,self.template)
+        self._burn_data_to_file()
 
     def __contains__(self,value):
         return value in self.data
 
     def __delitem__(self,index):
         '''
-        deletion is not allowed. just modification is permitted
+        deletion is not allowed in strict mode. just modification is permitted
         better to set value to None
         to preserve template structure
         '''
-        return
+        if self.strict:
+            self[index] = None
+            return
+
+        del self.data[index]
+        data = self.data
+        if(self.masterkey):
+            data = {self.masterkey:data}
+
+        jfile = open(self.file_path, 'w')
+        json.dump(data,jfile,indent = 4,ensure_ascii = False)
+        jfile.close()
 
 
     @staticmethod
@@ -71,33 +97,48 @@ class srbjson:
         try:
             jfile = open(fille)
         except FileNotFoundError:
-            srbjson._create_file(fille,template)
+            SrbJson._create_file(fille,template)
         jfile = open(fille)
         data = json.load(jfile)
 
-        masterkey = srbjson._get_master_key(template) # if template is in srb standard
+        masterkey = SrbJson._get_master_key(template) # if template is in srb standard
         if(masterkey):
             if(not masterkey in data.keys()):
-                srbjson._create_file(fille,template)
+                SrbJson._create_file(fille,template)
                 jfile = open(fille)
                 data = json.load(jfile)
             return data[masterkey]
         else:
             return data
 
+    def _burn_data_to_file(self):
+        """
+        burns data to original file
+        it is insecure way should be avoided to be directly used by user
+
+        """
+        data = self.data
+        if(self.masterkey):
+            data = {self.masterkey:data}
+
+        jfile = open(self.file_path, 'w')
+        json.dump(data,jfile,indent = 4,ensure_ascii = False)
+        jfile.close()
+
 
     @staticmethod
     def dump_data(data,file_path,template):
         """
-        burns data to original file
+        adds data to original file
+        it is bit secure, doesn't add extra key to data if not present in jfile already
         """
         fille = abs_path(file_path)
-        dictt = srbjson.extract_data(fille,template)
+        dictt = SrbJson.extract_data(fille,template)
         for key in data:
             if(key in dictt):
                 dictt[key] = data[key]
 
-        masterkey = srbjson._get_master_key(template) # just to avoid passing extra parameter as masterkey
+        masterkey = SrbJson._get_master_key(template) # just to avoid passing extra parameter as masterkey
         if(masterkey):
             dictt = {masterkey:dictt}
 

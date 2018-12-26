@@ -6,7 +6,7 @@ import pickle
 from .path import abs_path
 from .files import verify_file, file_name, file_extension
 
-class srbbank:
+class SrbBank:
     '''
     args:
         filename:- filename to be used to store data, it will be a file locally without .bank extension
@@ -46,7 +46,7 @@ class srbbank:
 
         if(not password): raise Exception('password protected, please provide password')
 
-        if(srbbank._md5(password) == _password): self._loggedin = True
+        if(SrbBank._md5(password) == _password): self._loggedin = True
         else: raise Exception('wrong password')
 
 
@@ -61,13 +61,13 @@ class srbbank:
     @_authenticator
     def setpass(self,password=None):
         if(password):
-            self._password = srbbank._md5(password)
+            self._password = SrbBank._md5(password)
         else:
             while True:
                 password = getpass.getpass('Enter your password:')
                 _pasword = getpass.getpass('ReEnter your password:')
                 if(password == _pasword):
-                    self._password = srbbank._md5(password)
+                    self._password = SrbBank._md5(password)
                     break
                 else:
                     print('passwords do not match')

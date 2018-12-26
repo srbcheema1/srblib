@@ -1,20 +1,19 @@
 import pytest
 import os
 
-from srblib import on_travis, srbjson, remove
+from srblib import on_travis, SrbJson, remove
 
 def test_srbbank():
     if(not on_travis):
         return
-    a = srbjson('hello',{'test':{'debug':False,'password':None}})
+    a = SrbJson('hello',{'test':{'debug':False,'password':None}})
     a['debug'] = True
     a['password'] = 'helloworld'
-    b = srbjson('hello',{'test':{'debug':False,'password':None}})
+    b = SrbJson('hello',{'test':{'debug':False,'password':None}})
     assert(b['debug'] == True)
     assert(b['password'] == 'helloworld')
     a['password'] = 'hello'
-    assert(b['password'] == 'helloworld') # it gets updated in file while it is not yet updated in data of b, it is outdated
-    b.fetch_data() # update data
-    assert(b['password'] == 'hello') # it gets updated in file while it is not yet updated in data of b, it is outdated
+    assert(b.data['password'] == 'helloworld') # it gets updated in file and data of a but not in data of b
+    assert(b['password'] == 'hello') # it gets updated automatically. while accesssing data using operators
     remove('hello')
-    assert(b['debug'] == True) # it gets updated in file while it is not yet updated in data of b, it is outdated
+    assert(b['debug'] == False) # it gets False value as the file was deleted and it is regenerated again

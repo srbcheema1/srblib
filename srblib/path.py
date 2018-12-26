@@ -128,7 +128,7 @@ def parent_dir(file_path,level=1):
 
 def relative_path(file_path):
     file_path = abs_path(file_path)
-    pwd = str(os.getcwd())
+    pwd = abs_path(os.getcwd())
     file_path = file_path[len(pwd):len(file_path)]
     return '.'+file_path
 

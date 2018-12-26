@@ -1,22 +1,22 @@
 import pytest
 import os
 
-from srblib import on_travis, srbbank
+from srblib import on_travis, SrbBank
 
-def test_srbbank():
+def test_SrbBank():
     if(not on_travis):
         return
-    a = srbbank('hello')
+    a = SrbBank('hello')
     a['hello'] = 'world'
-    b = srbbank('hello')
+    b = SrbBank('hello')
     assert(b['hello'] == 'world')
     b.setpass('password')
     try:
-        c = srbbank('hello','wrongpassword')
-        c = srbbank('hello') # no password
+        c = SrbBank('hello','wrongpassword')
+        c = SrbBank('hello') # no password
         assert(False) # it shouldn't have reached here
     except:
         pass
 
-    c = srbbank('hello','password')
+    c = SrbBank('hello','password')
     assert(c['hello'] == 'world')
