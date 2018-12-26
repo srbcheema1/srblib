@@ -4,6 +4,7 @@ __mod_name__ = 'srblib'
 
 from .colour import Colour
 
+from .debugger import debug
 from .debugger import on_srbpc
 from .debugger import on_travis
 
