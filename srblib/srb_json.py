@@ -4,11 +4,31 @@ from .path import abs_path
 from .files import verify_file
 
 class srbjson:
-    def __init__(self,file_name,template={}):
-        self.file_name = abs_path(file_name)
-        self.template = self.template
-        self.data = srbjson.extract_data(self.file_name,template)
-        self.masterkey = srbjson._get_master_key(template)
+    '''
+    A json class with common functionality.
+    parameters:
+        file_path - name/path of file
+        template  - a basic template for file.
+                    can be of two forms:
+                        1. {}   # default
+                        2. { 'app_name':{} } # default embeded in something, helps to check if file is good/bad
+    '''
+    def __init__(self,file_path,template={}):
+        self.file_path = abs_path(file_path)
+        self.template = template
+        self.masterkey = srbjson._get_master_key(template) # generlly 'app_name'
+        self.fetch_data()
+
+    srblib_template = {
+        "srblib": # masterkey
+        {
+            "debug":False,
+        }
+    }
+
+    def fetch_data(self):
+        self.data = srbjson.extract_data(self.file_path,self.template) # also creates empty if not there
+        return self.data
 
     def keys(self):
         return self.data.keys()
@@ -22,20 +42,22 @@ class srbjson:
     def __setitem__(self,index,value):
         if(index in self.data):
             self.data[index]=value
-            srbjson.dump_data(self.data,self.file_name,self.template)
+            srbjson.dump_data(self.data,self.file_path,self.template)
 
     def __contains__(self,value):
         return value in self.data
 
     def __delitem__(self,index):
         '''
-        deletion is not allowed. just modification
+        deletion is not allowed. just modification is permitted
+        better to set value to None
+        to preserve template structure
         '''
         return
 
 
     @staticmethod
-    def extract_data(file_name,template={}):
+    def extract_data(file_path,template={}):
         """
         Extracts json data from the given file
         if there is no such file
@@ -45,7 +67,7 @@ class srbjson:
         if file is ok
             it will return its content
         """
-        fille = abs_path(file_name)
+        fille = abs_path(file_path)
         try:
             jfile = open(fille)
         except FileNotFoundError:
@@ -65,31 +87,25 @@ class srbjson:
 
 
     @staticmethod
-    def dump_data(data,file_name,template):
+    def dump_data(data,file_path,template):
         """
-        create RAW data from LIST
-        uses _write_data
+        burns data to original file
         """
-        fille = abs_path(file_name)
+        fille = abs_path(file_path)
         dictt = srbjson.extract_data(fille,template)
         for key in data:
             if(key in dictt):
                 dictt[key] = data[key]
 
-        masterkey = srbjson._get_master_key(template)
+        masterkey = srbjson._get_master_key(template) # just to avoid passing extra parameter as masterkey
         if(masterkey):
             dictt = {masterkey:dictt}
 
-        jfile = open(abs_path(file_name), 'w')
+        jfile = open(abs_path(file_path), 'w')
         json.dump(dictt,jfile,indent = 4,ensure_ascii = False)
         jfile.close()
 
 
-    srblib_template = {
-        "srblib":{
-            "debug":False,
-        }
-    }
 
     @staticmethod
     def _create_file(fille,template):
@@ -101,7 +117,7 @@ class srbjson:
     @staticmethod
     def _get_master_key(template):
         keys = template.keys() # if template is in srb standard
-        if(len(keys) == 1 and type(keys[0]) == dict):
-            return keys[0]
+        if(len(keys) == 1 and type(template[list(keys)[0]]) == dict):
+            return list(keys)[0]
         else:
             return None
