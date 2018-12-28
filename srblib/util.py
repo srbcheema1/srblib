@@ -26,3 +26,7 @@ def line_adder(filename, line):
         if(not line in lines):
             f.seek(0, 0)
             f.write(content + '\n' + line + '\n')
+
+def top(container):
+    for item in container:
+        return item

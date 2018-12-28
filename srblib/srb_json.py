@@ -12,10 +12,13 @@ class SrbJson:
                     can be of two forms:
                         1. {}   # default
                         2. { 'app_name':{} } # default embeded in something, helps to check if file is good/bad
+                        3. [] for list type jsons
         strict - strict json follows template strictly and user can only modify values not keys
     '''
     def __init__(self,file_path,template={},strict=False):
         self.strict = strict
+        if(type(template) is list and strict):
+            raise Exception('strict mode only for dictionary rooted jsons not for list rooted jsons')
         self.file_path = abs_path(file_path)
         self.template = template
         self.masterkey = SrbJson._get_master_key(template) # generlly 'app_name'
@@ -58,6 +61,15 @@ class SrbJson:
         else:
             self.data[index]=value
         self._burn_data_to_file()
+
+    def append(self,item):
+        if not type(self.data) is list:
+            raise Exception(' append method only for list type jsons')
+        self.data.append(item)
+        self._burn_data_to_file()
+
+    def __len__(self):
+        return len(self.data)
 
     def __contains__(self,value):
         return value in self.data
@@ -157,6 +169,8 @@ class SrbJson:
 
     @staticmethod
     def _get_master_key(template):
+        if type(template) is list: # no master key for list
+            return None
         keys = template.keys() # if template is in srb standard
         if(len(keys) == 1 and type(template[list(keys)[0]]) == dict):
             return list(keys)[0]
