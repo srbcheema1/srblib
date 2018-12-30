@@ -44,9 +44,45 @@ python3 setup.py sdist
 
 
 - Colour - A class with color names and a static print function which prints coloured output to stderr
+```
+    Colour.print(message,Colour.RED) # for foreground as red
+    Colour.print(message,Colour.FULLGREEN) # for background as green
+    Colour.print(message,Colour.FULLGREEN+Colour.RED) # for background as fullgreen and foreground as RED
+```
 - SrbBank - A class to store things for later use of a program. can act as a database
+```
+    a = SrbBank('db_name') #say the db_name is your database name
+    a['hello'] = "world"
+    b = SrbBank('db2','password')
+    b['hello'] = "peeps"
+    # EXIT THE CODE AND START NEW SESSION
+    a = SrbBank('db_name')
+    print(a['hello']) # 'world'
+    b = SrbBank('db2','password')
+    print(b['hello']) # 'peeps'
+```
 - SrbJson - A class to use json file more easily
+```
+    a = SrbJson('json/path')
+    a['hello'] = 'world'
+    # EXIT THE CODE AND START NEW SESSION
+    a = SrbJson('json/path')
+    print(a['hello']) # 'world'
+```
 - Tabular - A class to user tabular data and read write json,xlsx,csv files
+```
+    a = Tabular('path/to/file') # can take files with extension as csv,json,xlsx
+    print(a) # prints table in tabular form
+    data = a.matrix # get data in form of list of lists i.e. matrix
+    json_data = a.json # get data in form of list of dictionaries i.e. json
+    print(a[1]['name']) # here name is the attribute used to name the columns
+    print(a[0]) # prints attributes
+    print(a[1]) # prints 1st row (0 based)
+    print(a['name']) # prints column with attribute 'name'
+    a.write_xls('output/path')
+    a.write_csv('output/path')
+    a.write_json('output/path')
+```
 
 ### Functions Offered
 
