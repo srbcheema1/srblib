@@ -31,9 +31,10 @@ from .path import relative_path # returns relative path if given absolute path
 
 from .srb_bank import SrbBank # A class to store things for later use of a program. can act as a database
 from .srb_json import SrbJson # A class to use json file more easily
-from .srb_csv import json_to_csv # a method to convert json file to csv file
 
 from .system import get_os_name # returns OS name. values are windows, linux or mac
+
+from .tabular import Tabular # A class to process dabular data
 
 from .util import line_adder # append a line if not present in a given file
 from .util import show_dependency_error_and_exit # display missing dependency error and exit

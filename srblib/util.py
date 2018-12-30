@@ -30,3 +30,4 @@ def line_adder(filename, line):
 def top(container):
     for item in container:
         return item
+    return None
