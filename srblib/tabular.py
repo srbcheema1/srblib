@@ -1,7 +1,9 @@
 import os
-
+import json
 import csv
+
 import pandas
+from terminaltables import AsciiTable
 import xlwt # only writes into excel workbook
 
 from .srb_json import SrbJson
@@ -14,6 +16,7 @@ class Tabular:
     def __init__(self,data=None):
         self.matrix = []
         self.json = []
+        self.json_str = ""
         self.header = []
         self._parse(data)
 
@@ -70,6 +73,7 @@ class Tabular:
 
     def _sync(self):
         self.json = Tabular.matrix_to_json(self.matrix)
+        self.json_str = json.dumps(self.json, sort_keys=True, indent=4)
 
     '''
     writer methods
@@ -154,7 +158,8 @@ class Tabular:
         self.matrix.append(item)
 
     def __str__(self):
-        return self.matrix.__str__()
+        return AsciiTable(self.matrix).table
+        return self.matrix.__str__() # simple way
 
     '''
     parsers

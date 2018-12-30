@@ -68,6 +68,9 @@ class SrbJson:
         self.data.append(item)
         self._burn_data_to_file()
 
+    def __str__(self):
+        return json.dumps(self.data, sort_keys=True, indent=4)
+
     def __len__(self):
         return len(self.data)
 

@@ -2,6 +2,7 @@ import getpass
 import hashlib
 import os
 import pickle
+import json
 
 from .path import abs_path
 from .files import verify_file, file_name, file_extension
@@ -57,6 +58,9 @@ class SrbBank:
             return func(self, *args, **kargs)
         return wrapper
 
+    @_authenticator
+    def __str__(self):
+        return json.dumps(self._data, sort_keys=True, indent=4)
 
     @_authenticator
     def setpass(self,password=None):
