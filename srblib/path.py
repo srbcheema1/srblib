@@ -100,7 +100,7 @@ both the paths will be in sync as both wont have / at end
 
 def abs_path(path,slash='/'):
     os_name = get_os_name()
-    if(os=='windows'):
+    if(os_name=='windows'):
         path = _abs_path_windows(path)
         return _change_slash(path,slash)
     else:
