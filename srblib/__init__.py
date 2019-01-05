@@ -1,4 +1,4 @@
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 __mod_name__ = 'srblib'
 
 
@@ -21,6 +21,8 @@ from .files import remove # removes a path recursively. it deletes all files and
 from .files import verify_file # verify that a file exists. if not it will create one. also creates parents if needed
 from .files import verify_folder # verify that a folder exists. creates one if not there. also creates parents if needed
 
+from .file_importer import Module # a class to import modules
+
 # one cant declare more attributes in frozen class
 from .frozen import FrozenClass # A class to be inherited to make a class frozen. i.e. no more attributes can be added.
 
@@ -38,5 +40,5 @@ from .tabular import Tabular # A class to process dabular data
 
 from .util import line_adder # append a line if not present in a given file
 from .util import show_dependency_error_and_exit # display missing dependency error and exit
+from .util import similarity # returns percentage of similarity of two strings
 from .util import top # first element of list or set or dict(first key)
-

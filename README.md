@@ -83,6 +83,12 @@ python3 setup.py sdist
     a.write_csv('output/path')
     a.write_json('output/path')
 ```
+- Module - A class to import a file with variable path
+```
+    a = Module('/path/to/file')
+    a.function_in_that_file()
+    print(a.variable_in_that_file)
+```
 
 ### Functions Offered
 
@@ -94,6 +100,7 @@ python3 setup.py sdist
 - remove - removes a path recursively. it deletes all files and folders under that path
 - verify_file - verify that a file exists. if not it will create one. also creates parents if needed
 - verify_folder - verify that a folder exists. creates one if not there. also creates parents if needed
+- similarity - returns percentage of similarity in two strings in O(len(a)*len(b))
 
 
 ### Variables Offered
