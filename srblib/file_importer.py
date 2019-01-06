@@ -5,6 +5,7 @@ from importlib.util import spec_from_file_location, module_from_spec
 from .path import abs_path
 from .files import verify_file
 
+# ignore_var_list = ['__class__','__weakref__','__dir__']
 class Module:
     def __init__(self,file_path,backup=None):
         '''
@@ -24,5 +25,6 @@ class Module:
 
         list_vars = dir(module)
         for var in list_vars:
+            # if var not in ignore_var_list:
             setattr(self,var,getattr(module,var))
 

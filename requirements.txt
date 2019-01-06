@@ -2,3 +2,5 @@ pandas
 terminaltables
 xlwt
 xlrd
+grequests
+bs4

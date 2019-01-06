@@ -7,6 +7,8 @@
 
 **srblib** is an umberalla python library to hold my useful python scripts which can be used in other projects.
 
+Its just not a *library*. Its a **perspective**.
+
 
 ### Installation
 
@@ -89,6 +91,17 @@ python3 setup.py sdist
     a.function_in_that_file()
     print(a.variable_in_that_file)
 ```
+- Soup - A class to help in scrapping, argument should be a url or BeautifulSoup object
+```
+    soup = BeautifulSoup('<p><div class="good">hello</div><div>world</div></p>','html.parser')
+    a = Soup(soup)
+    print(a) # prints it in pretty way
+    b = a['div',{'class':'good'}] # [<div class="good">hello</div>]
+    b = a[lambda tag: tag.name == 'div'] # [<div class="good">hello</div>, <div>world</div>]
+
+    a = Soup('http://gitub.com/srbcheema1')
+    b = a['div'][1]['p'] # cascading in [] operators they work similar to find_all function, save space
+```
 
 ### Functions Offered
 
@@ -100,7 +113,7 @@ python3 setup.py sdist
 - remove - removes a path recursively. it deletes all files and folders under that path
 - verify_file - verify that a file exists. if not it will create one. also creates parents if needed
 - verify_folder - verify that a folder exists. creates one if not there. also creates parents if needed
-- similarity - returns percentage of similarity in two strings in O(len(a)*len(b))
+- similarity - returns percentage of similarity in two strings.
 
 
 ### Variables Offered

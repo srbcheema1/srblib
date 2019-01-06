@@ -34,6 +34,8 @@ from .path import relative_path # returns relative path if given absolute path
 from .srb_bank import SrbBank # A class to store things for later use of a program. can act as a database
 from .srb_json import SrbJson # A class to use json file more easily
 
+from .soup import Soup # A class to make scrapping easier
+
 from .system import get_os_name # returns OS name. values are windows, linux or mac
 
 from .tabular import Tabular # A class to process dabular data
