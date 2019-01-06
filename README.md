@@ -1,8 +1,10 @@
 # srblib
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.ocm/srbcheema1/srblib/issues)
 [![a srbcheema1 production](https://img.shields.io/badge/-a%20srbcheema1%20production-blue.svg)](https://github.com/srbcheema1)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.ocm/srbcheema1/srblib/issues)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/srbcheema1/srblib)
+[![Build Status](https://travis-ci.org/srbcheema1/srblib.svg?branch=master)](https://travis-ci.org/srbcheema1/srblib)
+[![Build status](https://ci.appveyor.com/api/projects/status/e4pjlfby5xp2jy0d/branch/master?svg=true)](https://ci.appveyor.com/project/srbcheema1/srblib/branch/master)
 [![HitCount](http://hits.dwyl.io/srbcheema1/srblib.svg)](http://hits.dwyl.io/srbcheema1/srblib)
 
 **srblib** is an umberalla python library to hold my useful python scripts which can be used in other projects.
