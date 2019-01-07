@@ -2,7 +2,7 @@ import sys
 
 
 from .colour import Colour
-from .debugger import debug
+from .debugger import debug, on_travis
 
 
 _dependency_err_1 = """
@@ -13,7 +13,7 @@ _dependency_err_2 = """        python3 -m pip install -r requirements.txt
 def show_dependency_error_and_exit():
     Colour.print(_dependency_err_1,Colour.RED)
     Colour.print(_dependency_err_2,Colour.YELLOW)
-    if(debug):
+    if(debug or on_travis):
         import traceback
         traceback.print_exc()
     sys.exit(1)
