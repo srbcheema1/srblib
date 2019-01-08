@@ -4,6 +4,16 @@ import shutil
 from .path import abs_path
 from .colour import Colour
 
+
+def verified_file(file_path):
+    '''
+    returns abs_path if exists or raise exception
+    '''
+    file_path = abs_path(file_path)
+    if not os.path.isfile(file_path):
+        raise Exception('No such file : ' + file_path)
+    return file_path
+
 def verify_folder(folder,debug=False):
     '''
     similar to mkdir -p
