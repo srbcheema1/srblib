@@ -116,6 +116,8 @@ python3 setup.py sdist
 - verify_file - verify that a file exists. if not it will create one. also creates parents if needed
 - verify_folder - verify that a folder exists. creates one if not there. also creates parents if needed
 - similarity - returns percentage of similarity in two strings.
+- str_hash - hashing a string
+- path_hash - hashing a full path
 
 
 ### Variables Offered

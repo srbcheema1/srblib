@@ -33,6 +33,8 @@ from .path import relative_path # returns relative path if given absolute path
 
 from .srb_bank import SrbBank # A class to store things for later use of a program. can act as a database
 from .srb_json import SrbJson # A class to use json file more easily
+from .srb_hash import path_hash # get hash of full path (recursively)
+from .srb_hash import str_hash # get hash of string
 
 from .soup import Soup # A class to make scrapping easier
 
