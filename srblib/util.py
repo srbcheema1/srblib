@@ -3,7 +3,12 @@ import sys
 
 from .colour import Colour
 from .debugger import debug, on_travis
+from .system import os_name
 
+
+dump_output = ' > /dev/null 2>&1 '
+if os_name == 'windows':
+    dump_output = ' > nul 2>&1 '
 
 _dependency_err_1 = """
     You haven't installed the required dependencies.

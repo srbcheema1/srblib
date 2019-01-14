@@ -123,6 +123,7 @@ python3 setup.py sdist
 ### Variables Offered
 
 - debug - a boolean whose value can be changed in ~/.config/srblib/debug.json
+- on_windows - a boolean with value `True` is running on windows
 
 
 ### Contact / Social Media

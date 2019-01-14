@@ -39,6 +39,8 @@ from .srb_hash import str_hash # get hash of string
 from .soup import Soup # A class to make scrapping easier
 
 from .system import get_os_name # returns OS name. values are windows, linux or mac
+from .system import os_name # value of get_os_name
+from .system import on_windows # True if system is windows OS
 
 from .tabular import Tabular # A class to process dabular data
 
@@ -46,3 +48,4 @@ from .util import line_adder # append a line if not present in a given file
 from .util import show_dependency_error_and_exit # display missing dependency error and exit
 from .util import similarity # returns percentage of similarity of two strings
 from .util import top # first element of list or set or dict(first key)
+from .util import dump_output # variable containing string value ` > /dev/null 2>&1 ` or ` > nul 2>&1 `.

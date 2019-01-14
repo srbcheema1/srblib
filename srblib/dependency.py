@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from .util import line_adder
+from .util import line_adder, dump_output
 from .colour import Colour
 
 def _get_supported_distros(dependency_map):
@@ -32,9 +32,8 @@ def _get_installed_package_mangers(available_package_managers):
 
 
 def is_installed(soft):
-    dump_out = ' > /dev/null 2>&1'
     help_opt = ' --help '
-    a = os.system(soft + help_opt + dump_out)
+    a = os.system(soft + help_opt + dump_output)
     if a == 0 or a == 256:
         '''
         0 means return 0

@@ -9,3 +9,9 @@ def get_os_name():
     if 'linux' in os_name:
         return 'linux'
     return None
+
+os_name = get_os_name()
+
+on_windows = False
+if os_name == 'windows':
+    on_windows = True
