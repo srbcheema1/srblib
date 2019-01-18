@@ -50,7 +50,16 @@ class SrbJson:
 
     def __getitem__(self,index):
         self.fetch_data()
+        if index in self.data:
+            return self.data[index]
+
+        if self.masterkey and index in self.template[self.masterkey]:
+            self[index] = self.template[self.masterkey][index]
+        if not self.masterkey and index in self.template:
+            self[index] = self.template[self.masterkey][index]
+
         return self.data[index]
+
 
     def __setitem__(self,index,value):
         if self.strict:
