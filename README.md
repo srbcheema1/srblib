@@ -124,6 +124,7 @@ python3 setup.py sdist
 
 - debug - a boolean whose value can be changed in ~/.config/srblib/debug.json
 - on_windows - a boolean with value `True` is running on windows
+- on_ci - a boolean with value `True` is running on CI
 
 
 ### Contact / Social Media

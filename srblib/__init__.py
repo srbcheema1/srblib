@@ -5,6 +5,8 @@ __mod_name__ = 'srblib'
 from .colour import Colour # A class with color names and a static print function which prints coloured output to stderr
 
 from .debugger import debug # a boolean whose value can be changed in ~/.config/srblib/debug.json
+from .debugger import on_appveyor # a boolean value which is true if code is running on appveyor
+from .debugger import on_ci # a boolean value which is true if it code is running on CI
 from .debugger import on_srbpc # a boolean value which is true if it is my PC i.e. srb-pc
 from .debugger import on_travis # a boolean value which is true if code is running on travis
 
