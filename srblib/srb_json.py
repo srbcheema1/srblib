@@ -48,10 +48,30 @@ class SrbJson:
     def keys(self):
         return self.data.keys()
 
+    def get(self,index,notfound=None):
+        try:
+            return self[index]
+        except:
+            if notfound:
+                self[index] = notfound
+                return notfound
+            else:
+                return None
+
     def __getitem__(self,index):
+        notfound = None
+        orig_index = index
+        if(type(orig_index) is tuple):
+            index = orig_index[0]
+            notfound = orig_index[1]
+
         self.fetch_data()
         if index in self.data:
             return self.data[index]
+
+        if type(orig_index) is tuple:
+            self[index] = notfound
+            return notfound
 
         if self.masterkey and index in self.template[self.masterkey]:
             self[index] = self.template[self.masterkey][index]
