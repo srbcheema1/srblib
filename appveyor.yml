@@ -9,7 +9,7 @@ install:
   - "SET PYTHONPATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\lib\\site-packages;%PYTHONPATH%"
   - "echo %PATH%"
 
-  - "python -m pip install --disable-pip-version-check --user --upgrade pip"
+  - "python -m pip install --upgrade pip"
   - "python -m pip install -r requirements.txt"
 
 build_script:
