@@ -4,8 +4,3 @@ xlwt
 xlrd
 grequests
 bs4
-gevent
-Eel
-gevent-websocket
-greenlet
-PyInstaller

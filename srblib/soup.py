@@ -1,9 +1,10 @@
-import grequests
 from bs4 import BeautifulSoup
 
 from .colour import Colour
+from .system import os_name
 
 class Soup:
+    use_grequest = False
 
     def __init__(self,inp):
         if type(inp) is str:
@@ -55,26 +56,44 @@ class Soup:
             self.parent = Soup(Soup._trusted(self.soup.parent))
 
     @staticmethod
-    def get_soup(url):
+    def get_soup(url,*args,**kwargs):
         '''
         takes url and return soup.
         returns None if there is bad connection or bad response code.
         '''
-        unsent_requests = (grequests.get(url) for url in [url])
-        result = grequests.map(unsent_requests)[0]
-        if(result is None or result.status_code is not 200):
-            if(result == None):
-                temp_unsent_requests = (grequests.get(url) for url in ['https://google.com'])
-                temp_result = grequests.map(temp_unsent_requests)[0]
-                if(temp_result == None):
-                    colour.print('please check your internet connection', colour.red)
+        if os_name == "windows" or not use_grequest:
+            import requests
+            result = requests.get(url, *args, **kwargs)
+            if(result is None or result.status_code is not 200):
+                if(result == None):
+                    temp_result = requests.get('https://google.com')
+                    if(temp_result == None):
+                        colour.print('please check your internet connection', colour.red)
+                    else:
+                        colour.print('please check your url', colour.red)
                 else:
-                    colour.print('please check your url', colour.red)
-            else:
-                Colour.print('soup result on '+url+' :'+Colour.END+str(result), Colour.RED)
-            return None
-        soup = BeautifulSoup(result.text, 'html.parser')
-        return soup
+                    Colour.print('soup result on '+url+' :'+Colour.END+str(result), Colour.RED)
+                return None
+            soup = BeautifulSoup(result.text, 'html.parser')
+            return soup
+
+        else:
+            import grequests
+            unsent_requests = (grequests.get(url) for url in [url])
+            result = grequests.map(unsent_requests)[0]
+            if(result is None or result.status_code is not 200):
+                if(result == None):
+                    temp_unsent_requests = (grequests.get(url) for url in ['https://google.com'])
+                    temp_result = grequests.map(temp_unsent_requests)[0]
+                    if(temp_result == None):
+                        colour.print('please check your internet connection', colour.red)
+                    else:
+                        colour.print('please check your url', colour.red)
+                else:
+                    Colour.print('soup result on '+url+' :'+Colour.END+str(result), Colour.RED)
+                return None
+            soup = BeautifulSoup(result.text, 'html.parser')
+            return soup
 
     class _SO:
         def __init__(self,inp):
