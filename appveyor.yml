@@ -5,7 +5,9 @@ environment:
 
 install:
   - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\lib\\site-packages;%PATH%"
+  - "SET PYTHONPATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\lib\\site-packages;%PYTHONPATH%"
+  - "echo %PATH%"
 
   - "python -m pip install --disable-pip-version-check --user --upgrade pip"
   - "python -m pip install -r requirements.txt"
