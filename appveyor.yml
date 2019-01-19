@@ -19,4 +19,5 @@ build_script:
 test_script:
   - "python -c \"import grequests;print(grequests.__file__)\""
   - "python -m pip install srblib"
+  - "python -m pip install numpy"
   - "srblib -h"
