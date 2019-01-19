@@ -10,7 +10,7 @@ install:
   - "echo %PATH%"
 
   - "python -m pip install --disable-pip-version-check --user --upgrade pip"
-  - "python -m pip install -r .ci-requirements.txt"
+  - "python -m pip install -r requirements.txt"
 
 build_script:
   - "python setup.py build"
@@ -18,4 +18,5 @@ build_script:
 
 test_script:
   - "python -c \"import grequests;print(grequests.__file__)\""
+  - "python -m pip install srblib"
   - "srblib -h"
