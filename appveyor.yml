@@ -10,7 +10,7 @@ install:
   - "echo %PATH%"
 
   - "python -m pip install --disable-pip-version-check --user --upgrade pip"
-  - "python -m pip install -r requirements.txt"
+  - "python -m pip install -r .ci-requirements.txt"
 
 build_script:
   - "python setup.py build"

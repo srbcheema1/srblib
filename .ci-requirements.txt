@@ -1,0 +1,13 @@
+pandas
+terminaltables
+xlwt
+xlrd
+grequests
+bs4
+
+gevent
+Eel
+gevent-websocket
+greenlet
+PyInstaller
+numpy
