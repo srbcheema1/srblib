@@ -176,20 +176,11 @@ class SrbJson:
         adds data to original file
         it is bit secure, doesn't add extra key to data if not present in jfile already
         """
-        fille = abs_path(file_path)
-        dictt = SrbJson.extract_data(fille,template)
+        temp = SrbJson(file_path,template)
         for key in data:
-            if(key in dictt):
-                dictt[key] = data[key]
-
-        masterkey = SrbJson._get_master_key(template) # just to avoid passing extra parameter as masterkey
-        if(masterkey):
-            dictt = {masterkey:dictt}
-
-        jfile = open(abs_path(file_path), 'w')
-        json.dump(dictt,jfile,indent = 4,ensure_ascii = False)
-        jfile.close()
-
+            if(key in temp):
+                temp.data[key] = data[key]
+        temp._burn_data_to_file() # lazy burning
 
 
     @staticmethod
