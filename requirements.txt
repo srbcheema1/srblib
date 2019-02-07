@@ -4,3 +4,4 @@ xlwt
 xlrd
 grequests
 bs4
+argcomplete
