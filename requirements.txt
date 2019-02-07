@@ -2,6 +2,6 @@ pandas
 terminaltables
 xlwt
 xlrd
-grequests
 bs4
+requests
 argcomplete

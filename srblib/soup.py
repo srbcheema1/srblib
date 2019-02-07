@@ -1,10 +1,9 @@
-import grequests
 from bs4 import BeautifulSoup
+import requests
 
 from .colour import Colour
 
 class Soup:
-
     def __init__(self,inp):
         if type(inp) is str:
             self.soup = Soup.get_soup(inp)
@@ -16,17 +15,6 @@ class Soup:
             raise Exception('requires string as argument')
 
         self._sync()
-
-        # ignore_var_list = ['__class__','__weakref__','__dir__']
-        # ignore_var_list.extend(Soup._defined_vars)
-        # list_vars = dir(self.soup)
-        # _soup = self.soup
-        # for var in list_vars:
-            # if not var in ignore_var_list:
-                # setattr(self,var,getattr(_soup,var))
-
-
-    _defined_vars = ['__getitem__','find_all']
 
     def __getitem__(self,index):
         if(type(index) is tuple):
@@ -55,17 +43,15 @@ class Soup:
             self.parent = Soup(Soup._trusted(self.soup.parent))
 
     @staticmethod
-    def get_soup(url):
+    def get_soup(url,*args,**kwargs):
         '''
         takes url and return soup.
         returns None if there is bad connection or bad response code.
         '''
-        unsent_requests = (grequests.get(url) for url in [url])
-        result = grequests.map(unsent_requests)[0]
+        result = requests.get(url, *args, **kwargs)
         if(result is None or result.status_code is not 200):
             if(result == None):
-                temp_unsent_requests = (grequests.get(url) for url in ['https://google.com'])
-                temp_result = grequests.map(temp_unsent_requests)[0]
+                temp_result = requests.get('https://google.com')
                 if(temp_result == None):
                     colour.print('please check your internet connection', colour.red)
                 else:
