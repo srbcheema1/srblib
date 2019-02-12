@@ -103,6 +103,8 @@ python3 setup.py sdist
 
     a = Soup('http://gitub.com/srbcheema1')
     b = a['div'][1]['p'] # cascading in [] operators they work similar to find_all function, save space
+    text_output = a['div'][1]['p'].text # we can call any function or variable that we could call on soup
+    soup = b.soup # get original soup object
 ```
 
 ### Functions Offered
