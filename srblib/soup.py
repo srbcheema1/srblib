@@ -64,17 +64,22 @@ class Soup:
 
     class _SO:
         def __init__(self,inp):
-            self.data = inp # it is actually a list
+            if type(inp) is Soup._trusted:
+                self._data = inp._data
+                return
+            self._data = inp # it is actually a list
 
         def __getitem__(self,index):
-            return Soup(Soup._trusted(self.data[index]))
+            if(type(index) is slice): # a[1:9]
+                return Soup._SO(Soup._trusted(self._data[index]))
+            return Soup(Soup._trusted(self._data[index]))
 
         def __len__(self):
-            return len(self.data)
+            return len(self._data)
 
         def __str__(self):
-            return self.data.__str__()
+            return self._data.__str__()
 
     class _trusted:
-        def __init__(self,data):
-            self._data = data
+        def __init__(self,_data):
+            self._data = _data
