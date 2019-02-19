@@ -20,6 +20,10 @@ def test_tabular():
     a.write_json('test.json')
     a.write_xls('test.xlsx')
 
+    # strict
+    a.load_xls('spike/strict.xlsx',strict=True)
+    assert(len(a) == 8)
+
 
     b = Tabular('test.xlsx')
     assert(len(b) == 3)
