@@ -86,6 +86,8 @@ python3 setup.py sdist
     a.write_xls('output/path')
     a.write_csv('output/path')
     a.write_json('output/path')
+
+    NOTE: it reads blank and empty cells from excel file as None
 ```
 - Module - A class to import a file with variable path
 ```

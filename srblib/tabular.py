@@ -2,9 +2,9 @@ import os
 import json
 import csv
 
-import pandas
 from terminaltables import AsciiTable
 import xlwt # only writes into excel workbook
+import xlrd # only reads from excel workbook
 
 from .srb_json import SrbJson
 from .path import abs_path
@@ -48,23 +48,14 @@ class Tabular:
         if(not os.path.exists(inp_path)):
             raise Exception('missing input excel file')
 
-        raw_data = pandas.read_excel(inp_path)
-        header = list(raw_data.columns)
-
-        data = []
-        if(len(header) != 0): # some headers in xls file
-            temp_data = []
-            for head in header:
-                col = list(raw_data[head])
-                temp_data.append(col)
-            data.append(header)
-            for i in range(len(temp_data[0])):
-                row = []
-                for j in range(len(header)):
-                    row.append(temp_data[j][i])
-                data.append(row)
-
-        self.matrix = data
+        sheet = xlrd.open_workbook(inp_path).sheets()[0]
+        for i in range(sheet.nrows):
+            row = []
+            sheet_row = sheet.row_values(i)
+            for j in range(len(sheet_row)):
+                if sheet.cell_type(i,j) in (0,6): row.append(None)
+                else: row.append(sheet_row[j])
+            self.matrix.append(row)
         self._sync()
 
     def load_matrix(matrix):
