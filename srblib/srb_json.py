@@ -38,7 +38,7 @@ class SrbJson:
             if(self.masterkey): template = template[self.masterkey]
             for key in template.keys():
                 if not key in self.data:
-                    raise Exception('key' +key+ ' missing, json should be similar to template in strict mode')
+                    raise Exception('key ' +key+ ' missing, json should be similar to template in strict mode')
             for key in self.data:
                 if not key in template:
                     raise Exception('Extra key present ' +key+ ', json should be similar to template in strict mode')
@@ -76,7 +76,7 @@ class SrbJson:
         if self.masterkey and index in self.template[self.masterkey]:
             self[index] = self.template[self.masterkey][index]
         if not self.masterkey and index in self.template:
-            self[index] = self.template[self.masterkey][index]
+            self[index] = self.template[index]
 
         return self.data[index]
 
