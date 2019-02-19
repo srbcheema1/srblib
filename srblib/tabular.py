@@ -37,25 +37,32 @@ class Tabular:
         inp_path = abs_path(inp_path)
         if(not os.path.exists(inp_path)):
             raise Exception('missing input csv file')
+        self.matrix = []
 
         inp = open(inp_path)
         inp = csv.reader(inp,delimiter=delimit)
         self.matrix = list(inp)
         self._sync()
 
-    def load_xls(self,inp_path):
+    def load_xls(self,inp_path,strict = False):
         inp_path = abs_path(inp_path)
         if(not os.path.exists(inp_path)):
             raise Exception('missing input excel file')
+        self.matrix = []
 
         sheet = xlrd.open_workbook(inp_path).sheets()[0]
         for i in range(sheet.nrows):
+            if strict and sheet.cell_type(i,0) in (0,6):
+                continue
             row = []
             sheet_row = sheet.row_values(i)
             for j in range(len(sheet_row)):
                 if sheet.cell_type(i,j) in (0,6): row.append(None)
                 else: row.append(sheet_row[j])
             self.matrix.append(row)
+        for i in range(sheet.ncols):
+            if not self.matrix[0][i]:
+                raise Exception('header should not be none')
         self._sync()
 
     def load_matrix(matrix):

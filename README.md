@@ -88,6 +88,7 @@ python3 setup.py sdist
     a.write_json('output/path')
 
     NOTE: it reads blank and empty cells from excel file as None
+    NOTE: to read excel file in strict mode please call obj.load_xls(path,strict=True)
 ```
 - Module - A class to import a file with variable path
 ```
