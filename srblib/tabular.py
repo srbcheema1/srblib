@@ -8,7 +8,7 @@ import xlrd # only reads from excel workbook
 
 from .srb_json import SrbJson
 from .path import abs_path
-from .files import verify_file, file_extension
+from .files import verify_file, file_extension, remove
 from .util import top
 
 
@@ -65,13 +65,29 @@ class Tabular:
                 raise Exception('header should not be none')
         self._sync()
 
-    def load_matrix(matrix):
-        self.matrix = matrix
+
+    def load_matrix(self,matrix):
+        refined_matrix = []
+        cols = 0
+        for row in matrix:
+            cols = max(len(row),cols)
+
+        for row in matrix:
+            refined_row = []
+            for i in range(cols):
+                elem = row[i] if i < len(row) else None
+                refined_row.append(elem)
+            refined_matrix.append(refined_row)
+
+        self.matrix = refined_matrix
         self._sync()
+
 
     def _sync(self):
         self.json = Tabular.matrix_to_json(self.matrix)
         self.json_str = json.dumps(self.json, sort_keys=True, indent=4)
+
+
 
     '''
     writer methods
@@ -91,6 +107,7 @@ class Tabular:
 
     def write_xls(self,out_path):
         out_path = abs_path(out_path)
+        if os.path.isfile(out_path): remove(out_path) # remove an existing one
         verify_file(out_path)
         book = xlwt.Workbook(encoding="utf-8")
         sheet = book.add_sheet("Sheet1")
@@ -100,6 +117,8 @@ class Tabular:
                 sheet.write(i,j,row[j])
 
         book.save(out_path)
+
+
 
     '''
     helper methods used for conversion
@@ -137,6 +156,8 @@ class Tabular:
             ans.append(row_vals)
         return ans
 
+
+
     '''
     other operators and functions
     '''
@@ -159,6 +180,8 @@ class Tabular:
         return AsciiTable(self.matrix).table
         return self.matrix.__str__() # simple way
 
+
+
     '''
     parsers
     '''
@@ -175,7 +198,7 @@ class Tabular:
         if type(first_row) is not dict:
             for row in data:
                 ans.append(list(row))
-            self.matrix = ans
+            self.load_matrix(ans)
             return
 
         header = list(first_row.keys()) # random order header
@@ -185,7 +208,7 @@ class Tabular:
             for key in header:
                 row_vals.append(row[key])
             ans.append(row_vals)
-        self.matrix = ans
+        self.load_matrix(ans)
 
     def _parse_file(self,file_path):
         file_path = abs_path(file_path)
@@ -198,6 +221,8 @@ class Tabular:
             self.load_xls(file_path)
         else:
             raise Exception('Unknown file extension')
+
+
 
     '''
     helper class that enables named indexing into data
