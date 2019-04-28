@@ -106,6 +106,10 @@ class SrbJson:
     def __contains__(self,value):
         return value in self.data
 
+    def __iter__(self):
+        for x in self.data:
+            yield x
+
     def __delitem__(self,index):
         '''
         deletion is not allowed in strict mode. just modification is permitted
