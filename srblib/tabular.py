@@ -13,11 +13,17 @@ from .util import top
 
 
 class Tabular:
+    '''
+    this class assumes that your data has got a header
+    say first row in excel sheet is header
+    if your data is header-less then you may extract out matrix directly
+    x = Tabular('file-path').matrix
+    now operate on x directly
+    '''
     def __init__(self,data=None):
         self.matrix = []
         self.json = []
         self.json_str = ""
-        self.header = []
         self._parse(data)
 
     '''
@@ -162,6 +168,11 @@ class Tabular:
     other operators and functions
     '''
     def __getitem__(self,index):
+        if type(index) is slice:
+            header = [self.matrix[0]]
+            data = self.matrix[index]
+            header.extend(data)
+            return Tabular(header)
         if type(index) is str:
             loc = self.matrix[0].index(index)
             ans = []
@@ -175,10 +186,33 @@ class Tabular:
 
     def append(self,item):
         self.matrix.append(item)
+        self._sync()
+
+    def extend(self,othermatrix):
+        if type(othermatrix) is Tabular:
+            self.extend(othermatrix.matrix[1:])
+        self.matrix.extend(item)
+        self._sync()
 
     def __str__(self):
         return AsciiTable(self.matrix).table
         return self.matrix.__str__() # simple way
+
+    def __iter__(self):
+        for x in self.matrix[1:]:
+            yield x
+
+    def sort(self,fun,*args,**kwargs):
+        '''
+        a = Tabular('file')
+        a.sort(lambda x: int(x[0]),reverse = True)
+        '''
+        header = [self.matrix[0]]
+        data = self.matrix[1:]
+        data = sorted(data,key=fun,*args,**kwargs)
+        header.extend(data)
+        self.matrix=header
+        self._sync()
 
 
 
