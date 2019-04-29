@@ -51,6 +51,10 @@ class Tabular:
         self._sync()
 
     def load_xls(self,inp_path,strict = False):
+        '''
+        in strict mode we skip those rows which have first cell empty
+        can be used for commenting purposes
+        '''
         inp_path = abs_path(inp_path)
         if(not os.path.exists(inp_path)):
             raise Exception('missing input excel file')
