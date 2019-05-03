@@ -21,7 +21,7 @@ def verify_folder(folder,debug=False):
     folder = abs_path(folder)
     if not os.path.exists(folder):
         if(debug): print('creating folder '+ folder)
-        os.makedirs(folder)
+        os.makedirs(folder,exist_ok=True)
     elif os.path.isfile(folder):
         if(debug): print('there exists file of same name')
 
