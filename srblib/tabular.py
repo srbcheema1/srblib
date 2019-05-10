@@ -204,7 +204,7 @@ class Tabular:
 
     def __iter__(self):
         for x in self.matrix[1:]:
-            yield x
+            yield Tabular.row(x,self.matrix[0])
 
     def sort(self,fun,*args,**kwargs):
         '''
