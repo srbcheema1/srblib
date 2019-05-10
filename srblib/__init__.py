@@ -17,6 +17,9 @@ from .dependency import is_installed # checks if the following application is in
 from .dependency import remove_dependencies # Opposite of install_dependencies
 from .dependency import remove_dependencies_pkg # Opposite of install_dependencies_pkg
 
+from .email import email # a function
+from .email import Email # a class to send email
+
 from .files import file_extension # returns back the extention of a file from filepath, may return '' if no ext
 from .files import file_name # returns filename from a filepath
 from .files import remove # removes a path recursively. it deletes all files and folders under that path

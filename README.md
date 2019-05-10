@@ -53,6 +53,16 @@ python3 setup.py sdist
     Colour.print(message,Colour.FULLGREEN) # for background as green
     Colour.print(message,Colour.FULLGREEN+Colour.RED) # for background as fullgreen and foreground as RED
 ```
+- Email - A class to send Emails
+```
+    a = Email()
+    a.fromaddr = 'sender@gmail.com'
+    a.toaddr = 'receiver@gmail.com'
+    a.password = 'password'
+    a.body = "test mail"
+    a.subject = "test subject"
+    a.send()
+```
 - SrbBank - A class to store things for later use of a program. can act as a database
 ```
     a = SrbBank('db_name') #say the db_name is your database name
