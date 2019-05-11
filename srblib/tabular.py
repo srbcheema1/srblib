@@ -135,7 +135,7 @@ class Tabular:
     '''
     @staticmethod
     def matrix_to_json(data): # return list of dictonaries
-        header = data[0] # get header
+        header = [str(x) for x in data[0]] # get header
         data = data[1:] # rest is data
 
         json_data = []
