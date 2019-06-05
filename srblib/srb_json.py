@@ -143,17 +143,17 @@ class SrbJson:
         """
         fille = abs_path(file_path)
         try:
-            jfile = open(fille)
+            jfile = open(fille,'rb')
         except FileNotFoundError:
             SrbJson._create_file(fille,template)
-        jfile = open(fille)
+        jfile = open(fille,'rb')
         data = json.load(jfile)
 
         masterkey = SrbJson._get_master_key(template) # if template is in srb standard
         if(masterkey):
             if(not masterkey in data.keys()):
                 SrbJson._create_file(fille,template)
-                jfile = open(fille)
+                jfile = open(fille,'rb')
                 data = json.load(jfile)
             return data[masterkey]
         else:
