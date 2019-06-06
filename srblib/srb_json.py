@@ -1,7 +1,14 @@
 import json
+import sys
 
 from .path import abs_path
 from .files import verify_file
+
+def open_read(fille):
+    if sys.version_info[1] < 6:
+        return open(fille)
+    else:
+        return open(fille,'rb')
 
 class SrbJson:
     '''
@@ -143,17 +150,17 @@ class SrbJson:
         """
         fille = abs_path(file_path)
         try:
-            jfile = open(fille,'rb')
+            jfile = open_read(fille)
         except FileNotFoundError:
             SrbJson._create_file(fille,template)
-        jfile = open(fille,'rb')
+        jfile = open_read(fille)
         data = json.load(jfile)
 
         masterkey = SrbJson._get_master_key(template) # if template is in srb standard
         if(masterkey):
             if(not masterkey in data.keys()):
                 SrbJson._create_file(fille,template)
-                jfile = open(fille,'rb')
+                jfile = open_read(fille)
                 data = json.load(jfile)
             return data[masterkey]
         else:
