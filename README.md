@@ -123,6 +123,7 @@ python3 setup.py sdist
 ### Functions Offered
 
 - abs_path - returns absolute path of a path given. works on windows as well as linux.
+- debug_res - debug response of a requests made using requests module.
 - get_os_name - returns OS name. values are windows, linux or mac
 - is_installed - checks if the following application is installed on machine or not
 - file_extension - returns back the extention of a file from filepath, may return '' if no ext
